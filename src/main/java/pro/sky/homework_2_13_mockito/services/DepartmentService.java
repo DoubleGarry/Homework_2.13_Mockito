@@ -1,6 +1,8 @@
 package pro.sky.homework_2_13_mockito.services;
 
 import org.springframework.stereotype.Service;
+import pro.sky.homework_2_13_mockito.exceptions.DepartmentNotFoundException;
+import pro.sky.homework_2_13_mockito.exceptions.EmployeeNotFoundException;
 import pro.sky.homework_2_13_mockito.model.Employee;
 
 import java.util.Comparator;
@@ -17,18 +19,27 @@ public class DepartmentService {
         this.employeeService = employeeService;
     }
 
-    public Employee findEmployeeWithMaxSalaryFromDepartment(int department) {
+    public int findSumSalaryFromDepartment(int department) {
         return employeeService.findAll().stream()
                 .filter(employee -> employee.getDepartment() == department)
-                .max(Comparator.comparingInt(Employee::getSalary))
-                .orElse(null);
+                .mapToInt(Employee::getSalary)
+                .sum();
     }
 
-    public Employee findEmployeeWithMinSalaryFromDepartment(int department) {
+    public int findMaxSalaryFromDepartment(int department) {
         return employeeService.findAll().stream()
                 .filter(employee -> employee.getDepartment() == department)
-                .min(Comparator.comparingInt(Employee::getSalary))
-                .orElse(null);
+                .map(Employee::getSalary)
+                .max(Comparator.naturalOrder())
+                .orElseThrow(DepartmentNotFoundException::new);
+    }
+
+    public int findMinSalaryFromDepartment(int department) {
+        return employeeService.findAll().stream()
+                .filter(employee -> employee.getDepartment() == department)
+                .map(Employee::getSalary)
+                .min(Comparator.naturalOrder())
+                .orElseThrow(DepartmentNotFoundException::new);
     }
 
     public Map<Integer, List<Employee>> findEmployeesByDepartment() {

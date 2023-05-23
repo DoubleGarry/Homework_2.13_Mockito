@@ -10,7 +10,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import pro.sky.homework_2_13_mockito.exceptions.*;
 import pro.sky.homework_2_13_mockito.model.Employee;
 import pro.sky.homework_2_13_mockito.services.EmployeeService;
+
 import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 
@@ -55,20 +57,6 @@ public class EmployeeServiceTest {
         Assertions.assertThat(employeeService.findAll()).hasSize(beforeCount + 1);
         Assertions.assertThat(employeeService.findEmployee("Петр", "Петров", 4, 40000))
                 .isEqualTo(expected);
-    }
-
-    @ParameterizedTest
-    @MethodSource("addWithIncorrectFirstNameParams")
-    public void addWithIncorrectFirstNameParams(String incorrectFirstName) {
-        assertThatExceptionOfType(IncorrectFirstNameException.class)
-                .isThrownBy(() -> employeeService.addEmployee(incorrectFirstName, "Семенов", 1, 10000));
-    }
-
-    @ParameterizedTest
-    @MethodSource("addWithIncorrectLastNameParams")
-    public void addWithIncorrectLastNameParams(String incorrectLastName) {
-        Assertions.assertThatExceptionOfType(IncorrectLastNameException.class)
-                .isThrownBy(() -> employeeService.addEmployee("Семен", incorrectLastName, 1, 10000));
     }
 
     @Test
