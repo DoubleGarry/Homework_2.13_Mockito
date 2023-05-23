@@ -31,12 +31,6 @@ public class DepartmentService {
                 .orElse(null);
     }
 
-    public double totalSalariesForDepartment(int department) {
-        return employeeService.findAll().stream()
-                .filter(employee -> employee.getDepartment() == department)
-                .mapToInt(Employee::getSalary)
-                .sum();
-    }
     public Map<Integer, List<Employee>> findEmployeesByDepartment() {
         return employeeService.findAll().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment));
